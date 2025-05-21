@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
 import numpy as np
+import requests
 
 # Load models
 classifier_model = joblib.load('random_forest_classifier1.pkl')
@@ -98,7 +99,7 @@ def get_pollen():
             "Content-type": "application/json"
         }
 
-        import requests
+        
         res = requests.get(ambee_url, headers=headers, timeout=5)
         print("🔎 Ambee Response:", res.status_code, res.text)  # 🧪 Add this line
 

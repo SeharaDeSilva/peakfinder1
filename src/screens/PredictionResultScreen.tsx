@@ -65,7 +65,7 @@ const PredictionResultScreen: React.FC<PredictionResultScreenProps> = ({
     };
 
     try {
-      const response = await fetch("http://192.168.1.16:5000/predict/travel", {
+      const response = await fetch("http://192.168.8.200:5000/predict/travel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
