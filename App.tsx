@@ -92,6 +92,7 @@ import { enableScreens } from 'react-native-screens';
 import MountainSelectionScreen from './src/screens/MountainSelectionScreen';
 import UserInputScreen from './src/screens/UserInputScreen';
 import PredictionResultScreen from './src/screens/PredictionResultScreen';
+import MapViewScreen from './src/screens/MapViewScreen';
 
 enableScreens();
 
@@ -136,7 +137,29 @@ export type RootStackParamList = {
       hikerExperienceEncoded: number;
     };
   };
+  MapViewScreen: {
+  mountain: {
+    name: string;
+    latitude: number;
+    longitude: number;
+    elevation: number;
+    forecastNow: {
+      weather: string;
+      temp: number;
+      humidity: number;
+    };
+  };
+  trailPaths: {
+    length: number;
+    default: { latitude: number; longitude: number }[];
+    alternative: { latitude: number; longitude: number }[];
+  };
+  trailConditions: { condition: string }[];
+  timeNow: number;
 };
+};
+
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -159,7 +182,16 @@ export default function App() {
           component={PredictionResultScreen}
           options={{ headerShown: false }}
         />
+
+          <Stack.Screen
+          name="MapViewScreen"
+          component={MapViewScreen}
+          options={{ title: 'Trail Map' }}
+        />
       </Stack.Navigator>
+     
+    
+
     </NavigationContainer>
   );
 }

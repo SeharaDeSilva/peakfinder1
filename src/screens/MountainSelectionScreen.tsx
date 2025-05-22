@@ -19,7 +19,7 @@ import MapView, { Marker, Circle, Polyline } from 'react-native-maps';
 import { RootStackParamList } from '../../App'; 
 import axios from "axios";
 const mountains = [
-  { name: "Adam's Peak", latitude: 6.8094, longitude: 80.4999, elevation: 2243, difficulty: "Hard", difficultyEncoded: 0 },
+  { name: "Adam's Peak", latitude: 6.8096, longitude: 80.4994, elevation: 2243, difficulty: "Hard", difficultyEncoded: 0 },
   { name: "Bible Rock", latitude: 7.1000, longitude: 80.3333, elevation: 798, difficulty: "Hard", difficultyEncoded: 0 },
   { name: "Ella Rock", latitude: 6.8667, longitude: 81.0386, elevation: 1141, difficulty: "Hard", difficultyEncoded: 0 },
   { name: "Hanthana", latitude: 7.2500, longitude: 80.6333, elevation: 1200, difficulty: "Moderate", difficultyEncoded: 1 },
@@ -55,7 +55,7 @@ const encodeHumidity = (humidity: number): number => {
 
 const trailPaths: { [key: string]: { latitude: number; longitude: number }[] } = {
   "Adam's Peak": [
-    { latitude: 6.8080, longitude: 80.4980 },
+    { latitude: 6.8096, longitude: 80.4994 },
     { latitude: 6.8092, longitude: 80.4995 },
     { latitude: 6.8105, longitude: 80.5010 },
   ],
@@ -114,7 +114,7 @@ const MountainSelectionScreen = () => {
 
 
   const WEATHER_API_KEY = "5b1d50dc4c9d25a46417835c506a0644";
-  const FLASK_API_URL = "http://192.168.8.200:5000/predict/classifier";
+  const FLASK_API_URL = "http://192.168.1.26:5000/predict/classifier";
 
    const mountainImages: { [key: string]: any } = {
   "Adam's Peak": require("../../assets/images/adamspeak.jpg"),
@@ -256,7 +256,7 @@ const [pollenAdvice, setPollenAdvice] = useState<string>("");
 const fetchPollenData = async (latitude: number, longitude: number) => {
   try {
     const response = await axios.get(
-      `http://192.168.8.200:5000/get-pollen?lat=${latitude}&lng=${longitude}`
+      `http://192.168.1.26:5000/get-pollen?lat=${latitude}&lng=${longitude}`
     );
 
     console.log(" Full response:", response.data);

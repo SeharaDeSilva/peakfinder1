@@ -26,6 +26,8 @@ type PredictionResultScreenProps = {
 
 const genderMap = ["Female", "Male"];
 const experienceMap = ["Advanced", "Beginner", "Intermediate"];
+const ageRangeMap = ["Adult", "Child", "Senior", "Young Adult"];
+const backpackWeightMap = ["Light (0 - 7kg)", "Medium (5-10kg)", "Heavy (>10kg)"];
 
 const PredictionResultScreen: React.FC<PredictionResultScreenProps> = ({
   route,
@@ -50,6 +52,48 @@ const PredictionResultScreen: React.FC<PredictionResultScreenProps> = ({
     return 2;
   };
 
+  const trailPaths: { [key: string]: { latitude: number; longitude: number }[] } = {
+  "Adam's Peak": [
+    { latitude: 6.8080, longitude: 80.4980 },
+    { latitude: 6.8092, longitude: 80.4995 },
+    { latitude: 6.8105, longitude: 80.5010 },
+  ],
+  "Bible Rock": [
+    { latitude: 7.0980, longitude: 80.3310 },
+    { latitude: 7.0995, longitude: 80.3325 },
+    { latitude: 7.1008, longitude: 80.3340 },
+  ],
+  "Ella Rock": [
+    { latitude: 6.8650, longitude: 81.0370 },
+    { latitude: 6.8665, longitude: 81.0385 },
+    { latitude: 6.8680, longitude: 81.0400 },
+  ],
+  "Hanthana": [
+    { latitude: 7.2480, longitude: 80.6320 },
+    { latitude: 7.2495, longitude: 80.6335 },
+    { latitude: 7.2510, longitude: 80.6350 },
+  ],
+  "Lakegala": [
+    { latitude: 7.5815, longitude: 80.9480 },
+    { latitude: 7.5828, longitude: 80.9495 },
+    { latitude: 7.5840, longitude: 80.9510 },
+  ],
+  "Narangala Mountain": [
+    { latitude: 7.2150, longitude: 80.8815 },
+    { latitude: 7.2165, longitude: 80.8830 },
+    { latitude: 7.2180, longitude: 80.8845 },
+  ],
+  "Sigiriya": [
+    { latitude: 7.9550, longitude: 80.7580 },
+    { latitude: 7.9560, longitude: 80.7595 },
+    { latitude: 7.9575, longitude: 80.7610 },
+  ],
+  "Yahangala": [
+    { latitude: 7.3985, longitude: 80.9980 },
+    { latitude: 7.3998, longitude: 80.9995 },
+    { latitude: 7.4010, longitude: 81.0010 },
+  ],
+};
   const predictTime = async (forecast?: ForecastData) => {
     if (!forecast) return null;
     const payload = {
@@ -65,7 +109,7 @@ const PredictionResultScreen: React.FC<PredictionResultScreenProps> = ({
     };
 
     try {
-      const response = await fetch("http://192.168.8.200:5000/predict/travel", {
+      const response = await fetch("http://192.168.1.26:5000/predict/travel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -77,6 +121,15 @@ const PredictionResultScreen: React.FC<PredictionResultScreenProps> = ({
       return null;
     }
   };
+
+const difficultyMap = ["Hard", "Moderate", "Easy"];
+const handleFeedback = (response: string) => {
+  Alert.alert("Thank you!", `You marked the prediction as "${response}".`);
+
+  // Optional: Send to backend/database here
+  // Example: saveFeedbackToFirebase({ mountain: mountain.name, result: response, time: timeNow });
+};
+
 
   useEffect(() => {
     const runPredictions = async () => {
@@ -112,19 +165,115 @@ const PredictionResultScreen: React.FC<PredictionResultScreenProps> = ({
           </Text>
 
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Your Hiking Profile</Text>
-            <Text>Age Range: {mountain.ageRange}</Text>
-            <Text>Backpack: {mountain.backpackWeightRange}</Text>
+            <Text style={styles.cardTitle}>Hiking Profile</Text>
+           <Text>Age Range: {ageRangeMap[mountain.ageRange]}</Text>
+          <Text>Backpack: {backpackWeightMap[mountain.backpackWeightRange]}</Text>
             <Text>Gender: {genderMap[mountain.genderEncoded]}</Text>
-            <Text>Experience: {experienceMap[mountain.hikerExperienceEncoded]}</Text>
+           <Text>Experience: {experienceMap[mountain.hikerExperienceEncoded]}</Text>
+         <Text>Difficulty: {difficultyMap[mountain.difficulty]}</Text>
           </View>
-
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Estimated Hiking Time</Text>
-            <Text>Now: {timeNow?.toFixed(1)} hours</Text>
-            <Text>In 3h: {time3h?.toFixed(1)} hours</Text>
-            <Text>In 6h: {time6h?.toFixed(1)} hours</Text>
-          </View>
+  <Text style={styles.cardTitle}>Current Weather</Text>
+  <Text>Temperature: {mountain.forecastNow?.temp}°C</Text>
+  <Text>Humidity: {mountain.forecastNow?.humidity}%</Text>
+  <Text>Weather: {mountain.forecastNow?.weather}</Text>
+</View>
+
+
+<View style={styles.card}>
+  <Text style={styles.cardTitle}> Estimated Hiking Time (Now)</Text>
+  <Text style={styles.mainTime}>
+    {timeNow?.toFixed(1)} hours
+  </Text>
+  <Text style={styles.note}>
+    * This estimate is based on your profile and the current weather forecast.
+  </Text>
+</View>
+
+
+<View style={styles.card}>
+  <Text style={styles.cardTitle}>Prediction Comparison Summary</Text>
+
+  <View style={styles.compareRow}>
+    <Text style={styles.compareHeader}>Factor</Text>
+    <Text style={styles.compareHeader}>Now</Text>
+    <Text style={styles.compareHeader}>In 3h</Text>
+    <Text style={styles.compareHeader}>In 6h</Text>
+  </View>
+
+  <View style={styles.compareRow}>
+    <Text style={styles.compareLabel}>Weather</Text>
+    <Text style={styles.compareValue}>{mountain.forecastNow?.weather}</Text>
+    <Text style={styles.compareValue}>{mountain.forecast3h?.weather}</Text>
+    <Text style={styles.compareValue}>{mountain.forecast6h?.weather}</Text>
+  </View>
+
+  <View style={styles.compareRow}>
+    <Text style={styles.compareLabel}>Temp (°C)</Text>
+    <Text style={styles.compareValue}>{mountain.forecastNow?.temp}°</Text>
+    <Text style={styles.compareValue}>{mountain.forecast3h?.temp}°</Text>
+    <Text style={styles.compareValue}>{mountain.forecast6h?.temp}°</Text>
+  </View>
+
+  <View style={styles.compareRow}>
+    <Text style={styles.compareLabel}>Humidity (%)</Text>
+    <Text style={styles.compareValue}>{mountain.forecastNow?.humidity}%</Text>
+    <Text style={styles.compareValue}>{mountain.forecast3h?.humidity}%</Text>
+    <Text style={styles.compareValue}>{mountain.forecast6h?.humidity}%</Text>
+  </View>
+
+  
+</View>
+
+<View style={styles.card}>
+  <Text style={styles.cardTitle}>Estimated Time Progression</Text>
+
+  <View style={styles.progressBarWrapper}>
+    <View style={[styles.progressStep, { backgroundColor: "#007AFF" }]}>
+      <Text style={styles.progressLabel}>{timeNow?.toFixed(1)}h</Text>
+      <Text style={styles.progressSub}>Now</Text>
+    </View>
+
+    <View style={styles.progressLine} />
+
+    <View style={[styles.progressStep, { backgroundColor: "#FF9500" }]}>
+      <Text style={styles.progressLabel}>{time3h?.toFixed(1)}h</Text>
+      <Text style={styles.progressSub}>+3h</Text>
+    </View>
+
+    <View style={styles.progressLine} />
+
+    <View style={[styles.progressStep, { backgroundColor: "#FF3B30" }]}>
+      <Text style={styles.progressLabel}>{time6h?.toFixed(1)}h</Text>
+      <Text style={styles.progressSub}>+6h</Text>
+    </View>
+  </View>
+
+  <Text style={styles.note}>
+    * As conditions change, hiking time may increase due to heat, humidity, or rain.
+  </Text>
+</View>
+
+<TouchableOpacity
+  style={styles.mapButton}
+  onPress={() => navigation.navigate("MapViewScreen", {
+    mountain: {
+      ...mountain,
+      latitude: trailPaths[mountain.name]?.[0]?.latitude ?? 0,
+      longitude: trailPaths[mountain.name]?.[0]?.longitude ?? 0,
+    },
+   trailPaths: {
+  default: trailPaths[mountain.name] || [],
+  alternative: [], // you can load a real one later or leave empty
+},
+    trailConditions: mountain.trailConditions,
+    timeNow: timeNow!,
+  })}
+>
+  <Text style={styles.mapButtonText}>🗺️ View Trail on Map</Text>
+</TouchableOpacity>
+
+
         </ScrollView>
       )}
     </View>
@@ -153,4 +302,96 @@ const styles = StyleSheet.create({
   },
   cardTitle: { fontSize: 18, fontWeight: "bold", color: "#007AFF", marginBottom: 8 },
   value: { fontSize: 22, fontWeight: "bold", color: "#34A853" },
+  compareRow: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginBottom: 6,
+},
+
+compareHeader: {
+  flex: 1,
+  fontWeight: "bold",
+  fontSize: 14,
+  color: "#007AFF",
+},
+
+compareLabel: {
+  flex: 1,
+  fontSize: 14,
+  fontWeight: "600",
+  color: "#333",
+},
+
+compareValue: {
+  flex: 1,
+  fontSize: 14,
+  textAlign: "center",
+  color: "#444",
+},
+
+note: {
+  fontSize: 12,
+  color: "#888",
+  fontStyle: "italic",
+  marginTop: 8,
+  textAlign: "center",
+},
+mainTime: {
+  fontSize: 24,           // reduced from 32
+  fontWeight: "bold",
+  color: "#007AFF",
+  textAlign: "center",
+  marginVertical: 6,
+},
+progressBarWrapper: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  marginTop: 10,
+  marginBottom: 4,
+},
+
+progressStep: {
+  width: 70,
+  height: 70,
+  borderRadius: 35,
+  justifyContent: "center",
+  alignItems: "center",
+  elevation: 2,
+},
+
+progressLabel: {
+  color: "#fff",
+  fontSize: 16,
+  fontWeight: "bold",
+},
+
+progressSub: {
+  color: "#fff",
+  fontSize: 12,
+  marginTop: 2,
+},
+
+progressLine: {
+  flex: 1,
+  height: 2,
+  backgroundColor: "#ccc",
+  marginHorizontal: 6,
+},
+mapButton: {
+  backgroundColor: "#007AFF",
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 8,
+  marginTop: 20,
+},
+
+mapButtonText: {
+  color: "#fff",
+  fontWeight: "bold",
+  fontSize: 16,
+},
+
+
+
 });

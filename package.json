@@ -7,6 +7,7 @@
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.9.12",
     "axios": "^1.9.0",
+    "CleanApp": "file:",
     "react": "^18.2.0",
     "react-native": "0.73.11",
     "react-native-gesture-handler": "^2.9.0",
