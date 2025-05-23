@@ -109,7 +109,7 @@ const PredictionResultScreen: React.FC<PredictionResultScreenProps> = ({
     };
 
     try {
-      const response = await fetch("http://192.168.1.26:5000/predict/travel", {
+      const response = await fetch("http://192.168.1.6:5000/predict/travel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -253,7 +253,7 @@ const handleFeedback = (response: string) => {
     * As conditions change, hiking time may increase due to heat, humidity, or rain.
   </Text>
 </View>
-
+{/* 
 <TouchableOpacity
   style={styles.mapButton}
   onPress={() => navigation.navigate("MapViewScreen", {
@@ -263,12 +263,41 @@ const handleFeedback = (response: string) => {
       longitude: trailPaths[mountain.name]?.[0]?.longitude ?? 0,
     },
    trailPaths: {
+  length: (trailPaths[mountain.name] || []).length,
   default: trailPaths[mountain.name] || [],
   alternative: [], // you can load a real one later or leave empty
 },
     trailConditions: mountain.trailConditions,
     timeNow: timeNow!,
   })}
+>
+  <Text style={styles.mapButtonText}>🗺️ View Trail on Map</Text>
+</TouchableOpacity> */}
+<TouchableOpacity
+  style={styles.mapButton}
+  onPress={() =>
+    navigation.navigate("MapViewScreen", {
+      mountain: {
+        name: mountain.name,
+        latitude: mountain.latitude,
+        longitude: mountain.longitude,
+        elevation: mountain.elevation,
+        forecastNow: mountain.forecastNow,
+        ageRange: mountain.ageRange,
+        backpackWeightRange: mountain.backpackWeightRange,
+        genderEncoded: mountain.genderEncoded,
+        hikerExperienceEncoded: mountain.hikerExperienceEncoded,
+        difficulty: mountain.difficulty,
+      },
+      trailPaths: {
+        length: (trailPaths[mountain.name] || []).length,
+        default: trailPaths[mountain.name] || [],
+        alternative: [],
+      },
+      trailConditions: mountain.trailConditions,
+      timeNow: timeNow!,
+    })
+  }
 >
   <Text style={styles.mapButtonText}>🗺️ View Trail on Map</Text>
 </TouchableOpacity>

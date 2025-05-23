@@ -27,15 +27,36 @@ const UserInputScreen = ({ route, navigation }: Props) => {
       return;
     }
 
+    // navigation.navigate("PredictionResult", {
+    //   mountain: {
+    //     ...mountain,
+    //     ageRange,
+    //     backpackWeightRange,
+    //     genderEncoded,
+    //     hikerExperienceEncoded,
+    //   },
+    // });
     navigation.navigate("PredictionResult", {
-      mountain: {
-        ...mountain,
-        ageRange,
-        backpackWeightRange,
-        genderEncoded,
-        hikerExperienceEncoded,
-      },
-    });
+  mountain: {
+    name: mountain.name,
+    elevation: mountain.elevation,
+    difficulty: mountain.difficulty,
+    longitude: mountain.longitude,
+    latitude: mountain.latitude,
+    trailConditions: mountain.trailConditions,
+    forecastNow: mountain.forecastNow,
+    forecast3h: mountain.forecast3h,
+    forecast6h: mountain.forecast6h,
+    weatherEncoded: mountain.weatherEncoded,
+    humidity: mountain.humidity,
+    temperature: mountain.temperature,
+    ageRange,
+    backpackWeightRange,
+    genderEncoded,
+    hikerExperienceEncoded,
+  },
+});
+
   };
 
   return (

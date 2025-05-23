@@ -114,7 +114,7 @@ const MountainSelectionScreen = () => {
 
 
   const WEATHER_API_KEY = "5b1d50dc4c9d25a46417835c506a0644";
-  const FLASK_API_URL = "http://192.168.1.26:5000/predict/classifier";
+  const FLASK_API_URL = "http://192.168.1.6:5000/predict/classifier";
 
    const mountainImages: { [key: string]: any } = {
   "Adam's Peak": require("../../assets/images/adamspeak.jpg"),
@@ -256,7 +256,7 @@ const [pollenAdvice, setPollenAdvice] = useState<string>("");
 const fetchPollenData = async (latitude: number, longitude: number) => {
   try {
     const response = await axios.get(
-      `http://192.168.1.26:5000/get-pollen?lat=${latitude}&lng=${longitude}`
+      `http://192.168.1.6:5000/get-pollen?lat=${latitude}&lng=${longitude}`
     );
 
     console.log(" Full response:", response.data);
@@ -580,6 +580,8 @@ const fetchPollenData = async (latitude: number, longitude: number) => {
         onPress={() => navigation.navigate("UserInput", {
           mountain: {
             name: selectedMountain.name,
+            latitude: selectedMountain.latitude,
+            longitude: selectedMountain.longitude,
             elevation: selectedMountain.elevation,
             difficulty: selectedMountain.difficultyEncoded,
             weatherEncoded: weatherEncoded ?? 0,

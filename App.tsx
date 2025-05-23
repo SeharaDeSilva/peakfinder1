@@ -107,6 +107,8 @@ export type RootStackParamList = {
   MountainSelection: undefined;
   UserInput: {
     mountain: {
+      latitude: number;
+      longitude: number;
       name: string;
       elevation: number;
       difficulty: number;
@@ -121,6 +123,8 @@ export type RootStackParamList = {
   };
   PredictionResult: {
     mountain: {
+      longitude: number;
+      latitude: number;
       name: string;
       elevation: number;
       difficulty: number;
@@ -137,7 +141,27 @@ export type RootStackParamList = {
       hikerExperienceEncoded: number;
     };
   };
-  MapViewScreen: {
+//   MapViewScreen: {
+//   mountain: {
+//     name: string;
+//     latitude: number;
+//     longitude: number;
+//     elevation: number;
+//     forecastNow: {
+//       weather: string;
+//       temp: number;
+//       humidity: number;
+//     };
+//   };
+//   trailPaths: {
+//     length: number;
+//     default: { latitude: number; longitude: number }[];
+//     alternative: { latitude: number; longitude: number }[];
+//   };
+//   trailConditions: { condition: string }[];
+//   timeNow: number;
+// };
+MapViewScreen: {
   mountain: {
     name: string;
     latitude: number;
@@ -148,6 +172,11 @@ export type RootStackParamList = {
       temp: number;
       humidity: number;
     };
+    ageRange: number;
+    backpackWeightRange: number;
+    genderEncoded: number;
+    hikerExperienceEncoded: number;
+    difficulty: number;
   };
   trailPaths: {
     length: number;
@@ -157,6 +186,7 @@ export type RootStackParamList = {
   trailConditions: { condition: string }[];
   timeNow: number;
 };
+
 };
 
 
