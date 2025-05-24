@@ -95,7 +95,7 @@ def get_pollen():
 
         ambee_url = f"https://api.ambeedata.com/latest/pollen/by-lat-lng?lat={lat}&lng={lng}"
         headers = {
-            "x-api-key": "7517319162d66e6287da5750ecea1b3148812974e63b6a0e3f32221d3761432a",
+            "x-api-key": "72d89986ee0db506586e2a52e63cdd7931e83077a7ab50137d6bab5a3f9a847f",
             "Content-type": "application/json"
         }
 

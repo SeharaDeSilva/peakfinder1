@@ -109,7 +109,7 @@ const PredictionResultScreen: React.FC<PredictionResultScreenProps> = ({
     };
 
     try {
-      const response = await fetch("http://192.168.1.6:5000/predict/travel", {
+      const response = await fetch("https://seharabackend-460802.el.r.appspot.com/predict/travel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
